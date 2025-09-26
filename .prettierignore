@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Runtime data
+*.log
+*.lock
+
+# Docs that shouldn't be formatted
+*.md
+
+# Other
+.git/
+.DS_Store
+.env*

@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MEO Watch - Google Maps Ranking Monitor
+
+A SaaS application for monitoring Google Maps business rankings and competitor analysis.
+
+## Features
+
+- **Keyword Tracking**: Monitor your business ranking for specific keywords and locations
+- **Historical Data**: Track ranking changes over time with detailed analytics
+- **Competitor Analysis**: Analyze competitor businesses in your market
+- **Export Capabilities**: Export ranking data in CSV, XLSX, and JSON formats
+- **Subscription Management**: Tiered pricing plans with Stripe integration
+
+## Subscription Plans
+
+- **Starter**: ¥1,980/month - Up to 3 keywords
+- **Business**: ¥3,980/month - Up to 10 keywords + competitor analysis + CSV export
+- **Professional**: ¥7,980/month - Up to 50 keywords + API access + priority support
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 with App Router, React 19, TypeScript
+- **Backend**: Next.js API Routes, Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Payments**: Stripe
+- **Styling**: Tailwind CSS 4
+- **Data Collection**: Google Maps API
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone and install dependencies:**
+
+```bash
+git clone <repository>
+cd meo-watch
+npm install
+```
+
+2. **Set up environment variables:**
+
+Copy `.env.example` to `.env.local` and configure:
+
+```bash
+cp .env.example .env.local
+```
+
+Required environment variables:
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key
+- `GOOGLE_MAPS_API_KEY`: Your Google Maps API key
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
+- `STRIPE_SECRET_KEY`: Your Stripe secret key
+
+3. **Set up database:**
+
+- Create a new Supabase project
+- Run the database schema from `docs/design/meo-watch/database-schema.sql`
+- Run the RLS policies from `supabase/policies.sql`
+
+4. **Run the development server:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Development
+npm run dev          # Start development server with Turbopack
+npm run build        # Build for production
+npm run start        # Start production server
 
-## Learn More
+# Code Quality
+npm run lint         # Run ESLint with auto-fix
+npm run lint:check   # Run ESLint without auto-fix
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
+npm run type-check   # Run TypeScript type checking
 
-To learn more about Next.js, take a look at the following resources:
+# Git Hooks
+npm run prepare      # Set up Husky git hooks
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # React components
+├── lib/
+│   ├── supabase/       # Supabase client and utilities
+│   └── utils/          # Utility functions
+└── types/              # TypeScript type definitions
 
-## Deploy on Vercel
+docs/
+├── spec/               # Requirements documentation
+├── design/             # Technical design documents
+└── tasks/              # Implementation task breakdown
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Requirements](./docs/spec/meo-watch-requirements.md)
+- [Architecture Design](./docs/design/meo-watch/architecture.md)
+- [Database Schema](./docs/design/meo-watch/database-schema.sql)
+- [API Specifications](./docs/design/meo-watch/api-spec.md)
+- [Task Breakdown](./docs/tasks/meo-watch-tasks.md)
+
+## Contributing
+
+1. Follow the established code style (ESLint + Prettier)
+2. Write TypeScript with strict mode enabled
+3. Use conventional commit messages
+4. All commits trigger pre-commit hooks for linting and formatting
+
+## License
+
+This project is private and proprietary.
