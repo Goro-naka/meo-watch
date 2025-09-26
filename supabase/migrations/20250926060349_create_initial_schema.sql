@@ -5,8 +5,8 @@
 -- Extensions
 -- ==============================
 
--- UUID generation
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- UUID generation (using built-in pgcrypto)
+-- Note: Supabase has gen_random_uuid() available by default
 
 -- ==============================
 -- Custom Types
@@ -45,7 +45,7 @@ ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
 -- Subscription information
 CREATE TABLE subscriptions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
     stripe_subscription_id VARCHAR(255) UNIQUE,
     stripe_customer_id VARCHAR(255),
@@ -66,7 +66,7 @@ ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 
 -- Keywords management
 CREATE TABLE keywords (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
     keyword VARCHAR(255) NOT NULL,
     target_location VARCHAR(255) NOT NULL,
@@ -85,7 +85,7 @@ ALTER TABLE keywords ENABLE ROW LEVEL SECURITY;
 
 -- Ranking history data
 CREATE TABLE ranking_data (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     keyword_id UUID REFERENCES keywords(id) ON DELETE CASCADE,
     rank_position INTEGER, -- NULL means out of range (20+ position)
     search_date TIMESTAMPTZ NOT NULL,
@@ -102,7 +102,7 @@ ALTER TABLE ranking_data ENABLE ROW LEVEL SECURITY;
 
 -- Competitor business information
 CREATE TABLE competitor_businesses (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     keyword_id UUID REFERENCES keywords(id) ON DELETE CASCADE,
     ranking_data_id UUID REFERENCES ranking_data(id) ON DELETE CASCADE,
     business_name VARCHAR(255) NOT NULL,
@@ -125,7 +125,7 @@ ALTER TABLE competitor_businesses ENABLE ROW LEVEL SECURITY;
 
 -- Export history logs
 CREATE TABLE export_logs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
     export_type VARCHAR(20) NOT NULL, -- 'csv', 'xlsx', 'json'
     file_path TEXT,
@@ -147,7 +147,7 @@ ALTER TABLE export_logs ENABLE ROW LEVEL SECURITY;
 -- ==============================
 
 CREATE TABLE api_usage_logs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
     endpoint VARCHAR(255) NOT NULL,
     method VARCHAR(10) NOT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE api_usage_logs (
 -- ==============================
 
 CREATE TABLE job_queue (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     job_type VARCHAR(100) NOT NULL,
     payload JSONB NOT NULL,
     priority INTEGER DEFAULT 0,
